@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="css/webgui.css" type="text/css" >
+	</head>
+	<body onLoad="setActive(1)">
+		<div class="cs-main">
+			<div class="cs-part">
+				<h1>DLMS Reflash</h1>
+				<div class="cs-inputbox">
+					<label><span>List of devices:</span><span name="types" id="ip_address"></label>
+					<label><span>Image file:</span><span name="types" id="ip_address"></label>
+					<label><span>Use unicast mode:</span><span name="types" id="ip_address"></label>
+				</div>
+			</div>
+			<form>
+				<input class="cs-button" type="button" value="Upload" onclick="onConfirm()"></input>
+			</form>
+		</div>
+		<script type="text/javascript" src="js/file.js"></script>
+		<script>
+			var rowNumber = 0;
+			if(sessionStorage.getItem('login') == 0|| sessionStorage.getItem('login')==null)
+			{
+				//location.href ='./index.html'; 
+			}
+			
+			function onPostFile()
+			{
+				var selectedFile = document.getElementById("files").files[0];//获取读取的File对象
+				if(selectedFile != null)
+				{
+					var name = selectedFile.name;//读取选中文件的文件名
+					var size = selectedFile.size;//读取选中文件的大小
+
+					var reader = new FileReader();//这里是核心！！！读取操作就是由它完成的。
+					reader.readAsText(selectedFile);//读取文件的内容
+					
+					reader.onload = function(){
+						var file = "task="+name+"&"+this.result;
+						xmlHttpPost(file, postReturn);
+					};
+				}
+			}
+
+			function onConfirm()
+			{
+				var text = document.getElementById('textarea').value;
+				if(text.length != 0)
+				{
+					var file = "task=tmptaskfile.json"+"&"+text;
+					xmlHttpPost(file, postReturn);
+				}
+			}
+
+            function postReturn()
+            {
+                alert("upload success!");
+            }
+
+			function openShutManager(oSourceObj,oTargetObj,shutAble,oOpenTip,oShutTip){  
+				var sourceObj = typeof oSourceObj == "string" ? document.getElementById(oSourceObj) : oSourceObj;  
+				var targetObj = typeof oTargetObj == "string" ? document.getElementById(oTargetObj) : oTargetObj;  
+				var openTip = oOpenTip || "";  
+				var shutTip = oShutTip || "";  
+				if(targetObj.style.display!="none"){  
+					if(shutAble) return;  
+					targetObj.style.display="none";  
+					if(openTip  &&  shutTip){  
+						sourceObj.innerHTML = shutTip;   
+					}  
+				} else {  
+					targetObj.style.display="block";  
+					if(openTip  &&  shutTip){  
+						sourceObj.innerHTML = openTip;   
+					}  
+				}
+			}
+         </script>
+	</body>
+</html>

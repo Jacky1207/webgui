@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>StarDCU Web</title>
+		<link rel="stylesheet" href="css/style.css" type="text/css" >
+	</head>
+	<body onLoad="getConfig(22)">
+			<form>
+				<table class="table" id="table_tftp">
+					<input type="text" id="ftp_user" class="title_edit" disabled="true" value="		TFTP"></input>
+					<tr><td width="20%"><span>Server Ipaddress:</span></td><td width="25%"><input type="text" id="tftp_server" class="edit"></input></td><td width="55%"><b style="color:red;font-size:13px" id="b_user"></b></td></tr>
+<!--					<tr><td width="20%"><span>Server Port:</span></td><td width="25%"><input type="text" id="snmp_authentication"  class="edit"></input></td><td width="55%"><b style="color:red;font-size:13px" id="b_md5"></b></td></tr>
+					<tr><td width="20%"><span>User:</span></td><td width="25%"><input type="text" id="snmp_encryption"  class="edit"></input></td><td width="55%"><b style="color:red;font-size:13px" id="b_des"></b></td></tr>
+					<tr><td width="20%"><span>Passwd:</span></td><td width="25%"><input type="text" id="snmp_encryption"  class="edit"></input></td><td width="55%"><b style="color:red;font-size:13px" id="b_des"></b></td></tr>
+-->
+				</table>
+			</form>
+			<form style="position:relative;top:20px;">
+				<input type="button" onclick="onPostStr()" value="Confirm" class="button button1"/>
+			</form>
+		<script type="text/javascript" src="js/file.js"></script>
+		<script>
+			if(sessionStorage.getItem('login') == 0)
+			{
+				//location.href ='./index.html'; 
+			}
+			
+			function getConfig(index)
+			{
+				setActive(3);
+				httpGet(index, init);
+			}
+			
+			function init(value){
+				document.getElementById("tftp_server").value = getQueryStringByName(value,"tftp_server");
+			}
+			
+			function onPostStr()
+			{
+				return onPostHide("table_tftp", 22, "");
+			}
+			</script>
+	</body>
+</html>

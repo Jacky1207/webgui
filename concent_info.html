@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="css/style.css" type="text/css" >
+		<link rel="stylesheet" href="css/magic.css" type="text/css" >
+		<link rel="stylesheet" href="css/webgui.css" type="text/css" >
+	</head>
+	<body onLoad="getConfig(4)">
+		<div class="cs-main">
+			<div class="cs-part">
+				<h1>Concentrator Statistics</h1>
+				<div class="cs-inputbox">
+					<label><span>Total meters</span><span name="types" id="total_meters"></label>
+					<label><span>Permanent failure meters</span><span name="types" id="permanent_failure_meters"></label>
+					<label><span>Temporary failure meters</span><span name="types" id="temporary_failure_meters"></label>
+					<label><span>Active meters</span><span name="types" id="active_meters"></label>
+				</div>
+			</div>
+			<div class="cs-part">
+				<h1>Communication Statistics (Previous day)</h1>
+				<div class="cs-inputbox">
+					<label><span>Average active meters percentage</span><span name="types" id="active_meters_percent"></label>
+					<label><span>Average active meters</span><span name="types" id="average_active_meters"></label>
+					<label><span>Maximum active meters</span><span name="types" id="maximum_active_meters"></label>
+					<label><span>Total Meters (at 00:00)</span><span name="types" id="total_meters_at"></label>
+				</div>
+			</div>
+			<div>
+				<form method="post" action="config.cgi" onsubmit="return onPostStr()">
+					<input type="button" onclick="onPostStr()" value="Reload" class="cs-button"/>
+				</form>
+			</div>
+		</div>
+		<script type="text/javascript" src="file.js"></script>
+		<script>
+			if(sessionStorage.getItem('login') == 0|| sessionStorage.getItem('login')==null)
+			{
+				//location.href ='./index.html'; 
+			}
+			
+			function getConfig(index)
+			{
+				httpGet(index, init);
+			}
+			
+			function init(value){
+				var state = getQueryStringByName(value,"ntp_ctrl");
+				var options = document.getElementById("ntp_ctrl").options;
+					
+				document.getElementById("ntp_server_name").value = getQueryStringByName(value,"ntp_server_name");
+				if(state === "1")
+				{
+					options[0].selected = true;
+				}
+				else if(state === "0")
+				{
+					options[1].selected = true;
+				}
+			
+			}
+			</script>
+	</body>
+</html>

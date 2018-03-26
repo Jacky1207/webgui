@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="css/style.css" type="text/css" >
+		<link rel="stylesheet" href="css/magic.css" type="text/css" >
+		<link rel="stylesheet" href="css/webgui.css" type="text/css" >
+	</head>
+	<body onLoad="getConfig(4)">
+		<div class="cs-main">
+			<div class="cs-part">
+				<h1>NTP</h1>
+				<div class="cs-inputbox">
+					<label><span>NTP server</span><span name="types" id="ntp_server_address"></label>
+					<label><span>Frequency offset</span><span name="types" id="ntp_frequency"></label>
+					<label><span>Offset</span><span name="types" id="ntp_offset"></label>
+				</div>
+			</div>
+			<div>
+				<form method="post" action="config.cgi" onsubmit="return onPostStr()">
+					<input type="button" onclick="onPostStr()" value="Reload" class="cs-button"/>
+				</form>
+			</div>
+		</div>
+		<script type="text/javascript" src="file.js"></script>
+		<script>
+			if(sessionStorage.getItem('login') == 0 || sessionStorage.getItem('login')==null)
+			{
+				//location.href ='./index.html'; 
+			}
+			
+			function getConfig(index)
+			{
+				httpGet(index, init);
+			}
+			
+			function init(value){
+				var state = getQueryStringByName(value,"vpn_ctrl");
+				var options = document.getElementById("vpn_ctrl").options;
+				
+				document.getElementById("vpn_server_ip").value = getQueryStringByName(value,"vpn_server_ip");
+				document.getElementById("vpn_subnet").value = getQueryStringByName(value,"vpn_subnet");
+				document.getElementById("vpn_pre_shared").value = getQueryStringByName(value,"vpn_pre_shared");
+					
+				if(state === "1")
+				{
+					options[0].selected = true;
+				}
+				else if(state === "0")
+				{
+					options[1].selected = true;
+				}
+			}
+			
+			function onPostStr()
+			{
+				//check ip
+				if(checkIP("vpn_server_ip","vpn_ip") === 0)
+					return;
+				var length = document.getElementById("vpn_pre_shared").value.length;
+				if(length === 0)
+				{
+					setHtmlText("vpn_share", "The pre-shared must not be empty!");
+					return;
+				}
+				if(length > 32)
+				{
+					setHtmlText("vpn_share", "The length must not exceed 32 characters!");
+					return;
+				}
+				
+				setHtmlText("vpn_share","");
+				var ctrl = getCtrlParam("vpn_ctrl");
+				return onPostHide("table_vpn", VPN, ctrl);
+			}
+			</script>
+	</body>
+</html>

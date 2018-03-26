@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+		<link rel="stylesheet" href="css/webgui.css" type="text/css" >
+	</head>
+	<body>
+		<div class="cs-main">
+			<div class="cs-part">
+				<h1>Types</h1>
+				<div class="cs-inputbox">
+					<label><span>Standard events </span><input type="checkbox" class="cs-checkbox" name="types" id="standard_event"></label>
+					<label><span>Access events </span><input type="checkbox" class="cs-checkbox" name="types" id="access_event"></label>
+					<label><span>Demmand management events </span><input type="checkbox" class="cs-checkbox" name="types" id="management_event"></label>
+					<label><span>High occurrence events </span><input type="checkbox" class="cs-checkbox" name="types" id="high_event"></label>
+					<label><span>Meter events </span><input type="checkbox" class="cs-checkbox" name="types" id="meter_event"></label>
+				</div>
+			</div>
+			<div class="cs-part">
+				<h1>Funtion</h1>
+				<div class="cs-inputbox">
+					<label><span class="cs-span2">Log </span><input type="checkbox" class="cs-checkbox" name="function" id="log_func"></label>
+					<label><span class="cs-span2">XML </span><input type="checkbox" class="cs-checkbox" name="function" id="xml_func"></label>
+				</div>
+			</div>
+			<div class="cs-part">
+				<h1>Parameters</h1>
+				<button class="cs-button" id="submit">Confirm</button>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$('#submit').click(function(){
+				var inputArray = $('.cs-main input'); //取到页面中复选框对应的元素
+				var idArray = [];  //存放id；数组形式  可根据自己需要设定
+				$.each(inputArray,function(index,item){  //遍历所取到的元素  index:索引；item:对应元素
+					var attrId = $(item).attr('id'); //对应元素id
+					var attrValue = $(item).is(":checked");
+					idArray.push(attrId+"="+attrValue+"&");  
+				})
+				console.log(idArray);   //打印到控制台看结果
+			})
+		</script>
+	</body>
+</html>

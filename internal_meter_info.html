@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="css/style.css" type="text/css" >
+		<link rel="stylesheet" href="css/magic.css" type="text/css" >
+		<link rel="stylesheet" href="css/webgui.css" type="text/css" >
+	</head>
+	<body onLoad="getConfig(4)">
+		<div class="cs-main">
+			<div class="cs-part">
+				<h1>Internal Meter Info</h1>
+				<div class="cs-inputbox">
+					<label><span>Va (V)</span><span name="types" id="va_value"></label>
+					<label><span>Vb (V)</span><span name="types" id="vb_value"></label>
+					<label><span>Vc (V)</span><span name="types" id="vc_value"></label>
+					<label><span>Ia (A) on secondary</span><span name="types" id="ia_secondary"></label>
+					<label><span>Ib (A) on secondary</span><span name="types" id="ib_secondary"></label>
+					<label><span>Ic (A) on secondary</span><span name="types" id="ic_secondary"></label>
+					<label><span>Ia (A) on primary</span><span name="types" id="ia_primary"></label>
+					<label><span>Ib (A) on primary</span><span name="types" id="ib_primary"></label>
+					<label><span>Ic (A) on primary</span><span name="types" id="ic_primary"></label>
+					<label><span>Power factor</span><span name="types" id="power_factor"></label>
+					<label><span>Pa (kW) on primary</span><span name="types" id="pa_primary"></label>
+					<label><span>Pb (kW) on primary</span><span name="types" id="pb_primary"></label>
+					<label><span>Pc (kW) on primary</span><span name="types" id="pc_primary"></label>
+					<label><span>Qa (kVAr) on primary</span><span name="types" id="qa_primary"></label>
+					<label><span>Qb (kVAr) on primary</span><span name="types" id="qb_primary"></label>
+					<label><span>Qc (kVAr) on primary</span><span name="types" id="qc_primary"></label>
+					<label><span>Pt (kW) on primary</span><span name="types" id="pt_primary"></label>
+					<label><span>Qt (kVAr) on primary</span><span name="types" id="qt_primary"></label>
+					<label><span>Quadrant</span><span name="types" id="quadrant"></label>
+					<label><span>Phase direction 1 (+/-)</span><span name="types" id="phase_direction1"></label>
+					<label><span>Phase direction 2 (+/-)</span><span name="types" id="phase_direction2"></label>
+					<label><span>Phase direction 3 (+/-)</span><span name="types" id="phase_direction3"></label>
+					<label><span>Neutral presence</span><span name="types" id="neutral_presence"></label>
+					<label><span>Phase presence</span><span name="types" id="phase_presence"></label>
+					<label><span>Phase angle V</span><span name="types" id="phase_angle_v"></label>
+					<label><span>Phase angle I</span><span name="types" id="phase_angle_i"></label>
+					<label><span>Neutral current(mA) on primary</span><span name="types" id="neutral_current"></label>
+					<label><span>Homopolar sequence(mV)</span><span name="types" id="homopolar_sequence"></label>
+					<label><span>Inverse sequence(mV)</span><span name="types" id="inverse_sequence"></label>
+					<label><span>Direct sequence(mV)</span><span name="types" id="direct_sequence"></label>
+					<label><span>Medium voltage opened phase</span><span name="types" id="medium_voltage"></label>
+					<label><span>Frequency setting(Hz)</span><span name="types" id="frequency_setting"></label>
+				</div>
+			</div>
+			<div>
+				<form method="post" action="config.cgi" onsubmit="return onPostStr()">
+					<input type="button" onclick="onPostStr()" value="Reload" class="cs-button"/>
+				</form>
+			</div>
+		</div>
+		<script type="text/javascript" src="file.js"></script>
+		<script>
+			if(sessionStorage.getItem('login') == 0|| sessionStorage.getItem('login')==null)
+			{
+				//location.href ='./index.html'; 
+			}
+			
+			function getConfig(index)
+			{
+				httpGet(index, init);
+			}
+			
+			function init(value){
+				var state = getQueryStringByName(value,"ntp_ctrl");
+				var options = document.getElementById("ntp_ctrl").options;
+					
+				document.getElementById("ntp_server_name").value = getQueryStringByName(value,"ntp_server_name");
+				if(state === "1")
+				{
+					options[0].selected = true;
+				}
+				else if(state === "0")
+				{
+					options[1].selected = true;
+				}
+			
+			}
+			
+			function onPostStr()
+			{
+				//Legitimacy judgment
+				var length = document.getElementById("ntp_server_name").value.length;
+				if(length > 32)
+				{
+					setHtmlText("b_ntp", "The length must not exceed 32 characters!");
+					return;
+				}
+				setHtmlText("b_ntp","");
+				
+				var ctrl = getCtrlParam("ntp_ctrl");
+				return onPostHide("table_ntp", NTP, ctrl);
+			}
+			</script>
+	</body>
+</html>

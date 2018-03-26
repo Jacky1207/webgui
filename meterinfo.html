@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="css/style.css" type="text/css" >
+		<link rel="stylesheet" href="css/magic.css" type="text/css" >
+	</head>
+	<body>
+		<div id="main">
+			<div>
+				<form>
+					<input type="text" id="snmp_user" class="title_edit" disabled="true" value="	Meter Information:"></input>
+					<table class="table" id="meterinfo">
+					</table>
+				</form>
+				<form method="post" class="pos_right" action="config.cgi" onsubmit="return onPostStr()">
+					<input type="button" onclick="onReturn()" value="Return" class="button"/>
+				</form>
+			</div>
+		</div>
+		<script type="text/javascript" src="js/file.js"></script>
+		<script>
+			function getConfig(ind)
+			{
+				httpGet(ind, init);
+			}
+			
+			function splitStr(str)
+			{
+				var temp = str.split("\n");
+				for(var i =0;i<temp.length;i++){
+					if(temp[i] == ""){
+						continue;
+					}
+					if(isNaN(temp[i]) == false)		//is int
+					{
+						int count = getTableColums("meterlist");
+						var list = new Array();
+						for(var j=0;j<count;j++)
+						{
+							list.push(temp[i+j]);
+						}
+						insertRow("meterlist", rowNumber, list);
+						rowNumber++;
+						i+=count;
+					}
+				}
+			}
+			
+			function init(value){
+				splitStr(value);
+				return;
+			}
+			
+			function onReturn()
+			{
+				window.history.back(-1);
+			}
+
+			var index = 1;
+			function addRow(tbodyID)  
+			{  
+				var bodyObj=document.getElementById(tbodyID);  
+				if(bodyObj==null)   
+				{  
+					return;  
+				}  
+				var rowCount = bodyObj.rows.length;  
+				var cellCount = bodyObj.rows[1].cells.length;  
+				var newRow = bodyObj.insertRow(rowCount++);    
+				for(var i=0;i<cellCount;i++)  
+				{  
+					 var cellHTML = bodyObj.rows[1].cells[i].innerHTML;  
+					 if(cellHTML.indexOf("none")>=0)  
+					 {  
+						 cellHTML = cellHTML.replace("none","");  
+					 }
+					if(i == 0)
+						newRow.insertCell(i).innerHTML=index;
+					else
+						newRow.insertCell(i).innerHTML=cellHTML;
+				}
+				index ++;
+			}
+			
+			function removeRow(inputobj)  
+			{  
+				if(inputobj==null) return;  
+				var parentTD = inputobj.parentNode;  
+				var parentTR = parentTD.parentNode;  
+				var parentTBODY = parentTR.parentNode;  
+				parentTBODY.removeChild(parentTR);
+
+				updateIndex(parentTBODY);
+			}
+			
+			function updateIndex(table) {
+				var num = 1;
+				for(var i=2;i<table.rows.length;i++) {
+					table.rows[i].cells[0].innerHTML = num;
+					num ++;
+				}
+				index = table.rows.length-1;
+			}
+			
+			function getIndex()
+			{
+				return index;
+			}
+		</script>
+	</body>
+</html>

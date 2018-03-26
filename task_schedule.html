@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="css/style.css" type="text/css" >
+		<link rel="stylesheet" href="css/magic.css" type="text/css" >
+		<link rel="stylesheet" href="css/webgui.css" type="text/css" >
+	</head>
+	<body>
+		<div class="cs-main">
+			<div class="cs-part">
+				<h1>General</h1>
+				<div class="cs-inputbox">
+					<label><span class="cs-span2">Enable </span><input type="checkbox" class="cs-checkbox" name="types" id="task_enable"></label>
+				</div>
+			</div>
+			<div class="cs-part">
+				<h1>Programmed tasks</h1>
+				<div  class="cs-table">
+					<table class="table" id="meterlist">
+						<form method="get" action="config.cgi">
+							<tbody id="tbody1"> 
+							<tr class="line">
+							<td width="2%"><span>#<span/></td>
+							<td width="10%"><span>Task ID</span></td>
+							<td width="15%"><span>Start Time</span></td>
+							<td width="10%"><span>Execution period</span></td>
+							<td width="3%"><span>Priority</span></td><td width="55%"></td></tr>
+							<tr style="display:none" > 
+							<td><input type="text" size="2" readonly=true style="border:0px;" value=getIndex(1)/>
+							</td><td><input class="table_line" type="text" size="20" value="profile"/>
+							</td><td><input class="table_line" type="text" size="20" value="2018/01/01 00:00:00W"/>
+							</td><td><input class="table_line" type="text" size="20" value="1D"/>
+							</td><td><input class="table_line" type="text" size="5" value="2"/>
+							</td><td><input mce_style="display:none" type="button" value="Delete" onClick="removeRow(this, 1)"/>  
+							</td></tr> 
+							</tbody>
+							<tr><td><input type="text" size="2" readonly=true style="border:0px;display:none"/></td>
+							<td><input type="button" value="Add" onClick="addRow('tbody1', 1)"/></td><td></td></tr> 
+						</form>
+					</table>
+				</div>
+			</div>
+			<div class="cs-part">
+				<h1>Scheduled actions per task</h1>
+				<div  class="cs-table">
+					<table class="table" id="meterlist">
+						<form method="get" action="config.cgi">
+							<tbody id="tbody2"> 
+							<tr class="line">
+							<td width="2%"><span >#<span/></td>
+							<td width="10%"><span>Task ID</span></td>
+							<td width="8%"><span>STG Send</span></td>
+							<td width="8%"><span>Storage R/W</span></td>
+							<td width="8%"><span>TpAttr</span></td><td width="60%"></td></tr>
+							<tr style="display:none" > 
+							<td><input type="text" size="2" readonly=true style="border:0px;" value=getIndex(2)/>
+							</td><td><input class="table_line" type="text" size="20" value="profile"/>
+							</td><td><select id="snmp_ctrl" class="table_line">
+							<option value="T01">T01</option>
+							<option value="T02">T02</option></select></td>
+							</td><td><input type="checkbox" id="taskenable">
+							</td><td><input type="checkbox" id="taskenable">
+							</td><td><input mce_style="display:none" type="button" value="Delete" onClick="removeRow(this, 2)"/>  
+							</td></tr> 
+							</tbody>
+							<tr><td><input type="text" size="2" readonly=true style="border:0px;display:none"/></td>
+							<td><input type="button" value="Add" onClick="addRow('tbody2', 2)"/></td><td></td></tr> 
+						</form>
+					</table>
+				</div>
+			</div>
+			<div class="cs-part">
+				<h1>Meters per task</h1>
+				<div  class="cs-table">
+					<table class="table" id="meterlist">
+						<form method="get" action="config.cgi">
+							<tbody id="tbody3"> 
+							<tr class="line">
+							<td width="2%"><span >#<span/></td>
+							<td width="10%"><span>Task ID</span></td>
+							<td width="15%"><span>Meters Serial Number</span></td>
+							<td width="50%"></td></tr>
+							<tr style="display:none" > 
+							<td><input type="text" size="2" readonly=true style="border:0px;" value=getIndex(3)/>
+							</td><td><input class="table_line" type="text" size="20" value="profile"/>
+							</td><td><input class="table_line" type="text" size="20" value="2018/01/01 00:00:00W"/>
+							</td><td><input mce_style="display:none" type="button" value="Delete" onClick="removeRow(this, 3)"/>  
+							</td></tr> 
+							</tbody>
+							<tr><td><input type="text" size="2" readonly=true style="border:0px;display:none"/></td>
+							<td><input type="button" value="Add" onClick="addRow('tbody3', 3)"/></td><td></td></tr> 
+						</form>
+					</table>
+				</div>
+			</div>
+			<div>
+				<form method="post" action="config.cgi" onsubmit="return onPostStr()">
+					<input type="button" onclick="onSend()" value="Send" class="cs-button"/>
+					<input type="button" onclick="onReload()" value="Reload" class="cs-button"/>
+				</form>
+			</div>
+		</div>
+		<script type="text/javascript" src="js/file.js"></script>
+		<script>
+			var rowNumber = 0;
+			if(sessionStorage.getItem('login') == 0|| sessionStorage.getItem('login')==null)
+			{
+				//location.href ='./index.html'; 
+			}
+			function getConfig(ind)
+			{
+				httpGet(ind, init);
+			}
+			
+			function init(value){
+				var state = getQueryStringByName(value,"snmp_ctrl");
+				var options = document.getElementById("snmp_ctrl").options;
+				document.getElementById("snmp_user").value = getQueryStringByName(value,"snmp_user");
+				document.getElementById("snmp_authentication").value = getQueryStringByName(value,"snmp_authentication");
+				document.getElementById("snmp_encryption").value = getQueryStringByName(value,"snmp_encryption");
+				if(state === "1"){
+					options[0].selected = true;
+				}
+				else if(state === "0")
+				{
+					options[1].selected = true;
+				}
+			}
+
+			var task_index = 1;
+			var action_index = 1;
+			var meter_index = 1;
+			function addRow(tbodyID, type)  
+			{  
+				var bodyObj=document.getElementById(tbodyID);  
+				if(bodyObj==null)   
+				{  
+					alert("Body of Table not Exist!");  
+					return;  
+				}  
+				var rowCount = bodyObj.rows.length;  
+				var cellCount = bodyObj.rows[1].cells.length;  
+				var newRow = bodyObj.insertRow(rowCount++);    
+				for(var i=0;i<cellCount;i++)  
+				{  
+					var cellHTML = bodyObj.rows[1].cells[i].innerHTML;  
+					if(cellHTML.indexOf("none")>=0)  
+					{  
+						cellHTML = cellHTML.replace("none","");
+					}
+					if(i == 0)
+					{
+						if(type == 1)
+							newRow.insertCell(i).innerHTML=task_index;
+						else if(type == 2)
+							newRow.insertCell(i).innerHTML=action_index;
+						else if(type == 3)
+							newRow.insertCell(i).innerHTML=meter_index;
+					}
+					else
+						newRow.insertCell(i).innerHTML=cellHTML;
+						
+				}
+				if(type == 1)
+					task_index++;
+				else if(type == 2)
+					action_index++;
+				else if(type == 3)
+					meter_index++;
+			}  
+			function removeRow(inputobj, type)  
+			{  
+				if(inputobj==null) return;  
+				var parentTD = inputobj.parentNode;  
+				var parentTR = parentTD.parentNode;  
+				var parentTBODY = parentTR.parentNode;  
+				parentTBODY.removeChild(parentTR);
+				
+				updateIndex(parentTBODY, type);
+			} 
+			function updateIndex(table, type) {
+				var num = 1;
+				for(var i=2;i<table.rows.length;i++) {
+					table.rows[i].cells[0].innerHTML = num;
+					num ++;
+				}
+				if(type == 1)
+					task_index = table.rows.length-1;
+				else if(type == 2)
+					action_index = table.rows.length-1;
+				else if(type == 3)
+					meter_index = table.rows.length-1;
+			}
+			function getIndex(type)
+			{
+				if(type == 1)
+					return task_index;
+				else if(type == 2)
+					return action_index;
+				else if(type == 3)
+					return meter_index;
+			}
+
+			function onSend()
+			{
+
+			}
+
+			function onReload()
+			{
+			}
+		</script>
+	</body>
+</html>

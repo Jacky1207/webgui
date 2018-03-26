@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="css/style.css" type="text/css" >
+		<link rel="stylesheet" href="css/magic.css" type="text/css" >
+		<link rel="stylesheet" href="css/webgui.css" type="text/css" >
+	</head>
+	<body>
+		<div class="cs-main">
+			<div class="cs-part">
+				<h1>DNS Servers</h1>
+				<div  class="cs-inputbox">
+					<label><span class="cs-span2">Enable DNS resolver</span><input type="checkbox" class="cs-checkbox" name="types" id="dns_server_enable"></label>
+				</div>
+			</div>
+			<div class="cs-part">
+				<h1>Programmed tasks</h1>
+				<div  class="cs-table">
+					<table class="table" id="meterlist">
+						<form method="get" action="config.cgi">
+							<tbody id="tbody1"> 
+							<tr class="line">
+							<td width="2%"><span >#<span/></td>
+							<td width="10%"><span>IP address</span></td><td width="15%"></td><td width="70%"></td></tr>
+							<tr style="display:none" > 
+							<td><input type="text" size="2" readonly=true style="border:0px;" value=getIndex(1)/>
+							</td><td><input class="table_line" type="text" size="30" value="0.0.0.0"/>
+							</td><td><input mce_style="display:none" type="button" value="Delete" onClick="removeRow(this, 1)"/>  
+							</td></tr> 
+							</tbody>
+							<tr><td><input type="text" size="2" readonly=true style="border:0px;display:none"/></td>
+							<td><input type="button" value="Add" onClick="addRow('tbody1', 1)"/></td><td></td></tr> 
+						</form>
+					</table>
+				</div>
+			</div>
+			<div>
+				<form method="post" action="config.cgi" onsubmit="return onPostStr()">
+					<input type="button" onclick="onSend()" value="Send" class="cs-button"/>
+					<input type="button" onclick="onReload()" value="Reload" class="cs-button"/>
+				</form>
+			</div>
+		</div>
+		<script type="text/javascript" src="js/file.js"></script>
+		<script>
+			var rowNumber = 0;
+			if(sessionStorage.getItem('login') == 0|| sessionStorage.getItem('login')==null)
+			{
+				//location.href ='./index.html'; 
+			}
+			function getConfig(ind)
+			{
+				httpGet(ind, init);
+			}
+			
+			function init(value){
+				var state = getQueryStringByName(value,"snmp_ctrl");
+				var options = document.getElementById("snmp_ctrl").options;
+				document.getElementById("snmp_user").value = getQueryStringByName(value,"snmp_user");
+				document.getElementById("snmp_authentication").value = getQueryStringByName(value,"snmp_authentication");
+				document.getElementById("snmp_encryption").value = getQueryStringByName(value,"snmp_encryption");
+				if(state === "1"){
+					options[0].selected = true;
+				}
+				else if(state === "0")
+				{
+					options[1].selected = true;
+				}
+			}
+
+			var task_index = 1;
+			function addRow(tbodyID, type)  
+			{  
+				var bodyObj=document.getElementById(tbodyID);  
+				if(bodyObj==null)   
+				{  
+					alert("Body of Table not Exist!");  
+					return;  
+				}  
+				var rowCount = bodyObj.rows.length;  
+				var cellCount = bodyObj.rows[1].cells.length;  
+				var newRow = bodyObj.insertRow(rowCount++);    
+				for(var i=0;i<cellCount;i++)  
+				{  
+					var cellHTML = bodyObj.rows[1].cells[i].innerHTML;  
+					if(cellHTML.indexOf("none")>=0)  
+					{  
+						cellHTML = cellHTML.replace("none","");
+					}
+					if(i == 0)
+					{
+						if(type == 1)
+							newRow.insertCell(i).innerHTML=task_index;
+					}
+					else
+						newRow.insertCell(i).innerHTML=cellHTML;
+						
+				}
+				if(type == 1)
+					task_index++;
+			}  
+			function removeRow(inputobj, type)  
+			{  
+				if(inputobj==null) return;  
+				var parentTD = inputobj.parentNode;  
+				var parentTR = parentTD.parentNode;  
+				var parentTBODY = parentTR.parentNode;  
+				parentTBODY.removeChild(parentTR);
+				
+				updateIndex(parentTBODY, type);
+			} 
+			function updateIndex(table, type) {
+				var num = 1;
+				for(var i=2;i<table.rows.length;i++) {
+					table.rows[i].cells[0].innerHTML = num;
+					num ++;
+				}
+				if(type == 1)
+					task_index = table.rows.length-1;
+			}
+			function getIndex(type)
+			{
+				if(type == 1)
+					return task_index;
+			}
+
+			function onSend()
+			{
+
+			}
+
+			function onReload()
+			{
+			}
+		</script>
+	</body>
+</html>

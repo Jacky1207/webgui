@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="css/webgui.css" type="text/css" >
+	</head>
+	<body>
+		<div class="cs-main">
+			<div class="cs-part">
+				<h1>Report Stats</h1>
+				<div class="cs-inputbox">
+						<label><span class="cs-span2">Enable </span><input type="checkbox" class="cs-checkbox" name="types" id="static_ip_enable"></label>
+						<label><span class="cs-span2">IP address </span><input class="cs-text" type="text" name="types" id="ip_address"></label>
+						<label><span class="cs-span2">Mask </span><input class="cs-text" type="text" name="types" id="ip_mask"></label>
+						<label><span class="cs-span2">MAC address </span><input class="cs-text" type="text" name="types" id="mac_address"></label>
+				</div>
+				<form>
+					<input type="button" onclick="onSend()" value="Confirm" class="cs-button"></input>
+				</form>
+			</div>
+		</div>
+		<script type="text/javascript" src="js/file.js"></script>
+		<script>
+			var rowNumber = 0;
+			if(sessionStorage.getItem('login') == 0|| sessionStorage.getItem('login')==null)
+			{
+				//location.href ='./index.html'; 
+			}
+			function getConfig(ind)
+			{
+				httpGet(ind, init);
+			}
+			
+			function init(value){
+				var state = getQueryStringByName(value,"snmp_ctrl");
+				var options = document.getElementById("snmp_ctrl").options;
+				document.getElementById("snmp_user").value = getQueryStringByName(value,"snmp_user");
+				document.getElementById("snmp_authentication").value = getQueryStringByName(value,"snmp_authentication");
+				document.getElementById("snmp_encryption").value = getQueryStringByName(value,"snmp_encryption");
+				if(state === "1"){
+					options[0].selected = true;
+				}
+				else if(state === "0")
+				{
+					options[1].selected = true;
+				}
+			}
+
+			function onSend()
+			{
+
+			}
+		</script>
+	</body>
+</html>

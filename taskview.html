@@ -1,0 +1,64 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="css/style.css" type="text/css" >
+		<link rel="stylesheet" href="css/magic.css" type="text/css" >
+		<style> 
+        .white_content { 
+            position: relative; 
+			top: 5%;
+			left: 15%;
+			width: 60%;
+			height: 80%;
+			max-width: 630px;
+			min-width: 320px;
+			background-color:rgb(160, 36, 24);
+        }
+		.view_title_area{
+			background-color:rgb(212, 70, 55);
+            position: relative; 
+			left:0px;
+			width:100%;
+			height:10%;
+		}
+		.view_title{
+			background-color:rgb(212, 70, 55);
+            position: relative; 
+			font-size:24px;
+			color:white;
+			font-weight:blod;
+			text-align:center;
+			top:24%;
+		}
+		.view_text_area{
+            position: relative;
+			left:0%;
+			top:0%;
+			width:100%;
+			height:76%;
+		}
+		.view_text{
+            position: relative;
+			left:1%;
+			width:98%;
+			height:100%;
+			background-color:rgb(160, 36, 24);
+			border: 0;
+		}
+		.view_btn{
+            position: relative; 
+			left:44%;
+		}
+		</style>
+	</head>
+	<body>
+		<div id="light" class="white_content">
+			<form class="view_title_area"><h3 class="view_title">Task View</h3></form>
+			<form class="view_text_area">
+				<textarea class="view_text" readonly="true" id="view_text"></textarea>
+			</form>
+			<form>
+				<button class="button button1 view_btn" onclick="onHidden()">Close</button>
+			</form>
+		</div>
+	</body>
+</html>

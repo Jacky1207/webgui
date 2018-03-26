@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="css/style.css" type="text/css" >
+		<link rel="stylesheet" href="css/magic.css" type="text/css" >
+		<link rel="stylesheet" href="css/webgui.css" type="text/css" >
+		<style> 
+        .white_content { 
+            position: absolute;
+			display:none;
+			top: -5%;
+			left: 15%;
+			width: 60%;
+			height: 90%;
+			max-width: 630px;
+			min-width: 320px;
+			background-color:rgb(160, 36, 24);
+        }
+		.view_title_area{
+			background-color:rgb(212, 70, 55);
+            position: relative; 
+			left:0px;
+			width:100%;
+			height:10%;
+		}
+		.view_title{
+			background-color:rgb(212, 70, 55);
+            position: relative; 
+			font-size:24px;
+			color:white;
+			font-weight:blod;
+			text-align:center;
+			top:25%;
+		}
+		.view_text_area{
+            position: relative;
+			left:0%;
+			top:-5%;
+			width:100%;
+			height:75%;
+		}
+		.view_text{
+            position: relative;
+			left:1%;
+			top:2%;
+			width:98%;
+			height:100%;
+			background-color:rgb(160, 36, 24);
+			border: 0;
+			color:white;
+		}
+		.view_btn{
+            position: relative; 
+			left:44%;
+			top:-5%;
+		}
+		</style> 
+	</head>
+	<body onLoad="getConfig(20)">
+		<div class="cs-main">
+			<div class="cs-part">
+				<h1>Processes tasks</h1>
+				<div  class="cs-table">
+					<table class="table" id="taskstatus">
+						<tbody>
+							<form method="get" action="config.cgi">
+								<tr class="line"><td class="table_td"><span >#<span/></td>
+								<td class="table_td"><span>Task ID</span></td>
+								<td class="table_td"><span>Start Time</span></td>
+								<td class="table_td"><span>End Time</span></td>
+								<td class="table_td"><span>Priority</span></td>
+								<td class="table_td"><span>Period Time</span></td>
+								<td class="table_td"><span>Task State</span></td>
+	<!--						<td width="15%"><span>Next Start Time</span></td>
+								<td width="15%"><span>Next End Time</span></td>
+	-->							<td class="table_td"><span>Priority Type</span></td>
+								<td class="table_td"></td><td class="table_td"></td>	<!-- two btn space -->
+								</tr>
+							</form>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<!-- this is a task file view -->
+		<div id="light" class="white_content">
+			<form class="view_title_area"><h3 class="view_title">Task View</h3></form>
+			<form class="view_text_area">
+				<textarea class="view_text" readonly="true" id="view_text"></textarea>
+			</form>
+			<form>
+				<button class="button button1 view_btn" onclick="onHidden()">Close</button>
+			</form>
+		</div>
+		<script type="text/javascript" src="js/file.js"></script>
+		<script>
+			var rowNumber = 0;
+			if(sessionStorage.getItem('login') == 0|| sessionStorage.getItem('login')==null)
+			{
+				//location.href ='./index.html'; 
+			}
+			function getConfig(ind)
+			{
+				setActive(2);
+
+				httpGet(ind, init);
+			}
+			
+			function init(value){
+				insertTableInfo(value, "taskstatus", TASK_STATE);
+			}
+
+			function onHidden()
+			{
+				window.document.getElementById('light').style.display='none';
+			}
+
+			var tTD;
+			var table = document.getElementById("taskstatus");   
+			for (j = 0; j < table.rows[0].cells.length; j++) 
+			{   
+				table.rows[0].cells[j].onmousedown = function () 
+				{   
+					tTD = this;   
+					if (event.offsetX > tTD.offsetWidth - 10) 
+					{   
+						tTD.mouseDown = true;   
+						tTD.oldX = event.x;   
+						tTD.oldWidth = tTD.offsetWidth;   
+					}   
+				};   
+				table.rows[0].cells[j].onmouseup = function () 
+				{   
+					if (tTD == undefined) tTD = this;   
+					tTD.mouseDown = false;   
+					tTD.style.cursor = 'default';   
+				};   
+				table.rows[0].cells[j].onmousemove = function () 
+				{   
+					if (event.offsetX > this.offsetWidth - 10)   
+						this.style.cursor = 'col-resize';   
+					else   
+						this.style.cursor = 'default';   
+					if (tTD == undefined) 
+						tTD = this;   
+					if (tTD.mouseDown != null && tTD.mouseDown == true) 
+					{
+						tTD.style.cursor = 'default';   
+						if (tTD.oldWidth + (event.x - tTD.oldX)>0)   
+							tTD.width = tTD.oldWidth + (event.x - tTD.oldX);   
+						tTD.style.width = tTD.width;   
+						tTD.style.cursor = 'col-resize';  
+					}   
+				};   
+			} 
+		</script>
+	</body>
+</html>

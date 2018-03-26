@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html style="overflow-x:hidden">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Iconos -->
+		<link href="css/font-awesome.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="css/menu.css" media="screen" type="text/css" />
+
+		<title>StarDCU Web</title>
+		<link rel="stylesheet" href="css/style.css" type="text/css" >
+	</head>
+
+	<body>
+		<header class="webbox">
+			<img src="image/cimg01.png" alt/>	
+		</header>
+		<!-- Contenedor -->
+		<div>
+		<ul id="accordion" class="accordion">
+			<li>
+				<div class="link"><i class="fa fa-github-square"></i>Operation<i class="fa fa-chevron-down"></i></div>
+				<ul class="submenu">
+					<li><a id="link_menu" href="meterlist.html" target="frame">Meter List</a></li>
+					<li><a id="link_menu" href="taskstatus.html" target="frame">Task Stats</a></li>
+					<li><a id="link_menu" href="report_stats.html" target="frame">Report Stats</a></li>
+					<li><a id="link_menu" href="xml_cycle.html" target="frame">XML Cycles</a></li>
+					<li><a id="link_menu" href="dlms_flash.html" target="frame">DLMS Reflash</a></li>
+				</ul>
+			</li>
+			<li>
+				<div class="link"><i class="fa fa-gears"></i>Configuration<i class="fa fa-chevron-down"></i></div>
+				<ul class="submenu">
+					<li><a id="link_menu" href="event_manager.html" target="frame">Event Manager</a></li>
+					<li><a id="link_menu" href="lan.html" target="frame">LAN</a></li>
+					<li><a id="link_menu" href="g3.html" target="frame">G3</a></li>
+					<li><a id="link_menu" href="task_schedule.html" target="frame">Task Scheduler</a></li>
+					<li><a id="link_menu" href="internal_meter.html" target="frame">Internal Meter</a></li>
+					<li><a id="link_menu" href="route.html" target="frame">Static Routes</a></li>
+					<li><a id="link_menu" href="dns_server.html" target="frame">DNS Servers</a></li>
+					<li><a id="link_menu" href="vpn.html" target="frame">VPN</a></li>
+					<li><a id="link_menu" href="snmp.html" target="frame">SNMP</a></li>
+					<li><a id="link_menu" href="ntp.html" target="frame">NTP</a></li>
+				</ul>
+			</li>
+			<li>
+				<div class="link"><i class="fa fa-eye"></i>Information<i class="fa fa-chevron-down"></i></div>
+				<ul class="submenu">
+					<li><a id="link_menu" href="concent_info.html" target="frame">Concentrator</a></li>
+					<li><a id="link_menu" href="internal_meter_info.html" target="frame">Internal Meter</a></li>
+					<li><a id="link_menu" href="lan_info.html" target="frame">LAN</a></li>
+					<li><a id="link_menu" href="route_info.html" target="frame">Routing</a></li>
+					<li><a id="link_menu" href="vpn_info.html" target="frame">VPN</a></li>
+					<li><a id="link_menu" href="ntp_info.html" target="frame">NTP</a></li>
+				</ul>
+			</li>
+			<li><div class="link"><i class="fa fa-leaf"></i>System<i class="fa fa-chevron-down"></i></div>
+				<ul class="submenu">
+					<li><a href="#">Google</a></li>
+					<li><a href="#">Bing</a></li>
+					<li><a href="#">Yahoo</a></li>
+					<li><a href="#">Otros buscadores</a></li>
+				</ul>
+			</li>
+		</ul>
+		</div>
+		<div id="center_form" class="info">
+			<form>
+				<iframe src="" id="frame" name="frame" class="frame" frameborder="0" scrolling="auto"></iframe>
+			</form>
+		</div>
+
+		<script src='js/jquery-3.3.1.min.js'></script>
+		<script src="js/index.js"></script>
+		<script>
+		$(document).ready(function(){
+			$("a").click(function(){
+				$('a').removeClass('active');
+				$(this).addClass('active');
+			});
+		});
+
+		function changeFrameHeight(){
+			var ifm= document.getElementById("frame");
+			ifm.height=document.documentElement.clientHeight-56;
+		}
+
+		window.onresize=function(){ changeFrameHeight();}
+		$(function(){changeFrameHeight();});
+		</script>
+	</body>
+
+</html>
